@@ -30,6 +30,8 @@ def validate(text):
         raise ValueError("review must be a single line")
     if not text.strip():
         raise ValueError("review must not be only whitespace")
+    if text != text.strip():
+        raise ValueError("review must not start or end with whitespace")
     return True
 
 
@@ -40,6 +42,10 @@ def main():
     path = os.path.join(output_dir, "entry.txt")
     with open(path, "w", encoding="utf-8", newline="") as handle:
         handle.write(REVIEW)
+    with open(path, "r", encoding="utf-8", newline="") as handle:
+        written = handle.read()
+    if written != REVIEW:
+        raise ValueError("read-back mismatch: entry.txt differs from REVIEW")
     print("wrote %s (%d characters)" % (path, len(REVIEW)))
     return 0
 
